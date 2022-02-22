@@ -1,0 +1,35 @@
+描述：给定两个大小分别为 m 和 n 的正序（从小到大）数组 nums1 和 nums2。请你找出并返回这两个正序数组的中位数 。算法的时间复杂度应该为 O(log (m+n)) 。
+
+class Solution {
+public:
+    double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
+        int len=nums1.size()+nums2.size();
+        if(len%2==0){//总长为偶，则需找出len/2、len/2+1这两个元素
+            int left=getK(nums1,0,nums2,0,len/2);
+            int right=getK(nums1,0,nums2,0,len/2+1);
+            return (double)(left+right)/2;//不加double会出错
+        }
+        else//总长为奇，则找len/2+1为中位数
+            return getK(nums1,0,nums2,0,len/2+1);
+    }
+    int getK(vector<int>& nums1,int i,vector<int>& nums2,int j,int k){
+        int len1=nums1.size();
+        int len2=nums2.size();
+        if(len1-i>len2-j)
+            return getK(nums2,j,nums1,i,k);
+        if(k==1){
+            if(len1==i)//k=1且数组1已无元素，返回nums2[j]
+                return nums2[j];
+            else//k=1且数组1还有元素，返回两数组第一个元素的较小者
+                return min(nums1[i],nums2[j]);
+        }
+        if(len1==i)//i越界，直接返回数组2的第k小元素
+            return nums2[j+k-1];
+        int a=min(len1,i+k/2);
+        int b=j+k-k/2;
+        if(nums1[a-1]>nums2[b-1])
+            return getK(nums1,i,nums2,b,k-(b-j));
+        else
+            return getK(nums1,a,nums2,j,k-(a-i));
+    }
+};
