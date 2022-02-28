@@ -1,0 +1,22 @@
+编写一个函数来查找字符串数组中的最长公共前缀。
+
+如果不存在公共前缀，返回空字符串 ""。
+
+
+
+class Solution {
+public:
+    string longestCommonPrefix(vector<string>& strs) {
+        int wordLen=strs[0].size();
+        int n=strs.size();
+        if(n==0)
+            return "";
+        for(int i=0;i<wordLen;i++){//前缀相同，用第一个单词的判断即可
+            for(int j=1;j<n;j++){
+                if(strs[j][i]!=strs[0][i])
+                    return strs[0].substr(0,i);//截断法
+            }
+        }
+        return strs[0];
+    }
+};
