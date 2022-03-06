@@ -1,0 +1,33 @@
+数字 n 代表生成括号的对数，请你设计一个函数，用于能够生成所有可能的并且 有效的 括号组合。
+1 <= n <= 8
+
+
+class Solution {
+public:
+    vector<string> generateParenthesis(int n) {
+        vector<string> ans;
+        string temp;
+        dfs(temp,ans,0,0,n);
+        return ans;
+    }
+private: 
+    void dfs(string &temp,vector<string> &ans,int left,int right,int n){
+        if(left==n&&right==n){
+            ans.push_back(temp);
+            return;
+        }
+        if(left<right)//保证右括号不大于左括号
+            return;
+        if(left<n){//左括号数量不大于n,放一个左括号
+            temp.push_back('(');
+            dfs(temp,ans,left+1,right,n);
+            temp.pop_back();
+        }
+        if(right<n){//右括号数量不大于n，放一个右括号
+            temp.push_back(')');
+            dfs(temp,ans,left,right+1,n);
+            temp.pop_back();
+        }
+            
+    }
+};
