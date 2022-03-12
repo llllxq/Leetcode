@@ -1,0 +1,50 @@
+给定一个按照升序排列的整数数组 nums，和一个目标值 target。找出给定目标值在数组中的开始位置和结束位置。
+如果数组中不存在目标值 target，返回 [-1, -1]。
+进阶：
+你可以设计并实现时间复杂度为 O(log n) 的算法解决此问题吗？
+示例 1
+输入：nums = [5,7,7,8,8,10], target = 8
+输出：[3,4]
+示例 2：
+输入：nums = [5,7,7,8,8,10], target = 6
+输出：[-1,-1]
+示例 3：
+输入：nums = [], target = 0
+输出：[-1,-1]
+提示：
+0 <= nums.length <= 105
+-109 <= nums[i] <= 109
+nums 是一个非递减数组
+-109 <= target <= 109
+
+
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        int n=nums.size();
+        vector<int> ans(2,-1);//初始化，为了方便每个都设为-1
+        if(!n)
+            return ans;
+        int left=0,right=n-1;
+        while(left<right){//最后left=right，都会在起始位置，此轮while寻找左边界
+            int mid=left+(right-left)/2;
+            if(nums[mid]<target)
+                left=mid+1;
+            else
+                right=mid;
+        }
+        if(nums[left]!=target)//比如78810中没有9，则返回空
+            return ans;
+        ans[0]=left;
+        right=n;//继续从右边开始逼近
+        while(left<right){//找右边界，最后left=right为右边界
+            int mid=left+(right-left)/2;
+            if(nums[mid]>target)
+                right=mid;
+            else
+                left=mid+1;
+        }
+        ans[1]=left-1;//终止下标
+        return ans;
+    }
+};
