@@ -1,0 +1,40 @@
+请你判断一个 9 x 9 的数独是否有效。只需要 根据以下规则 ，验证已经填入的数字是否有效即可。
+数字 1-9 在每一行只能出现一次。
+数字 1-9 在每一列只能出现一次。
+数字 1-9 在每一个以粗实线分隔的 3x3 宫内只能出现一次。（请参考示例图）
+注意：
+一个有效的数独（部分已被填充）不一定是可解的。
+只需要根据以上规则，验证已经填入的数字是否有效即可。
+空白格用 '.' 表示。
+
+
+
+class Solution {
+public:
+    bool isValidSudoku(vector<vector<char>>& board) {
+        // 用vector会导致速度非常慢24%和内存消耗很大5%，直接用数组形式会有很大的提升，均达到99%
+        // vector<vector<int>> r(9, vector<int>(9));
+        // vector<vector<int>> c(9, vector<int>(9));
+        // vector<vector<vector<int>>> cube(9, vector<vector<int>>(9, vector<int>(9)));
+        int r[9][9]={0};
+        int c[9][9]={0};
+        int cube[3][3][9]={0};
+        // 一遍遍历
+        for(int i=0;i<9;i++){
+            for(int j=0;j<9;j++){
+                if(board[i][j]!='.'){
+                    int k=board[i][j]-'0'-1;
+                    if((r[i][k]==1)||(c[j][k]==1)||(cube[i/3][j/3][k]==1))
+                        return false;
+                    r[i][k]++;
+                    c[j][k]++;
+                    cube[i/3][j/3][k]++;
+                }
+            }
+        }
+        return true;    
+    }
+};
+// 慢的原因是数据存储的局部性问题（data locality）:
+// 1) 使用二位数组Depart[500][21]的时候，所有数据在内存中是连续存放的。访问内存时，内存访问的局部性较强，Cache命中的概率较大。L1 Cache访问延迟只有几个指令周期，而内存访问延迟则达到几百个指令周期。
+// 2）Vector中的数据是连续存放的，但是Vector本身只保存指向数据块的指针。Vector建立在栈上，保存数据的数据块在堆上。因此二位动态数组Vector <Vector<int>>中，指向行的所有指针是连续存放的。每个行的数据是连续存放的，但是行与行之间是不连续存放的。因此跨行访问时局部性降低，Cache命中率下降。所以用时间更多。
