@@ -1,0 +1,44 @@
+实现 pow(x, n) ，即计算 x 的 n 次幂函数（即，xn ）。
+
+示例 1：
+输入：x = 2.00000, n = 10
+输出：1024.00000
+示例 2：
+输入：x = 2.10000, n = 3
+输出：9.26100
+示例 3：
+输入：x = 2.00000, n = -2
+输出：0.25000
+解释：2-2 = 1/22 = 1/4 = 0.25
+
+提示：
+-100.0 < x < 100.0
+-2^31 <= n <= 2^31-1
+-10^4 <= xn <= 10^4
+
+
+class Solution {
+public:
+    double myPow(double x, int n) {
+        long long N=n;
+        if(n==0)
+            return 1.0;
+        else if(n>0)
+            return cal(x,N);
+        else
+            return 1.0/cal(x,-N);//复数的处理
+    }
+    double cal(double x,long long N){//二分法
+        if(N==0)
+            return 1.0;
+        double temp=cal(x,N/2);
+        if(N%2==0)//如果N为double，则会报错
+            return temp*temp;
+        else
+            return temp*temp*x;   
+    }
+};
+// double 属于浮点类型，具体为双精度浮点类型，通常为 IEEE-754 64 位浮点类型。
+// long double 也属于浮点类型，具体为扩展精度浮点类型，其精度不低于double，具体由编译器和硬件平台决定，比如在x86架构的平台上，大多数C编译器以80位扩展精度类型实现long double。而在Solaris/SPARC机器上，编译器以128位四倍精度类型实现long double。
+// long 属于整数类型，目标类型至少有32位宽度。
+// long long属于整数类型，目标类型至少有64位宽度。
