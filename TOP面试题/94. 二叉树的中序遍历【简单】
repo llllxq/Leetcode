@@ -1,0 +1,26 @@
+给定一个二叉树的根节点 root ，返回 它的 中序 遍历 。
+
+
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+# 方法：递归、迭代、和Morris 遍历算法
+# morris是另一种遍历二叉树的方法，它能将非递归的中序遍历空间复杂度降为 O(1)，实际上是先找到最右节点，连接到root
+class Solution(object):
+    def inorderTraversal(self, root):
+        """
+        :type root: TreeNode
+        :rtype: List[int]
+        """
+        ans=[]
+        def inorder(root,ans):
+            if not root:
+                return
+            inorder(root.left,ans)
+            ans.append(root.val)
+            inorder(root.right,ans)
+        inorder(root,ans)
+        return ans
