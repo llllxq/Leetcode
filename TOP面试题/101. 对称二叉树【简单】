@@ -1,0 +1,25 @@
+给你一个二叉树的根节点 root ， 检查它是否轴对称。
+
+
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution(object):
+    def isSymmetric(self, root):
+        """
+        :type root: TreeNode
+        :rtype: bool
+        """
+        def compare(l,r):
+            if not l and not r:
+                return True
+            if not l or not r:
+                return False
+            if l.val==r.val and compare(l.left,r.right) and compare(l.right,r.left):
+                return True
+            else:
+                return False
+        return compare(root,root)
