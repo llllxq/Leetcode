@@ -1,0 +1,39 @@
+给定两个整数数组 preorder 和 inorder ，其中 preorder 是二叉树的先序遍历， inorder 是同一棵树的中序遍历，请构造二叉树并返回其根节点。
+
+提示:
+1 <= preorder.length <= 3000
+inorder.length == preorder.length
+-3000 <= preorder[i], inorder[i] <= 3000
+preorder 和 inorder 均 无重复 元素
+inorder 均出现在 preorder
+preorder 保证 为二叉树的前序遍历序列
+inorder 保证 为二叉树的中序遍历序列
+
+
+
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution(object):
+    def buildTree(self, preorder, inorder):
+        """
+        :type preorder: List[int]
+        :type inorder: List[int]
+        :rtype: TreeNode
+        """
+        def build(pre_l,pre_r,in_l,in_r,preorder,inorder):
+            if pre_l>pre_r or in_l>in_r:
+                return
+            pre_root=TreeNode(preorder[pre_l])
+            in_root=in_l
+            while in_root<=in_r and inorder[in_root]!=preorder[pre_l]:
+                in_root+=1
+            l=in_root-in_l
+            pre_root.left=build(pre_l+1,pre_l+l,in_l,in_root-1,preorder,inorder)
+            pre_root.right=build(pre_l+l+1,pre_r,in_root+1,in_r,preorder,inorder)
+            return pre_root
+        return build(0,len(preorder)-1,0,len(inorder)-1,preorder,inorder)
+
