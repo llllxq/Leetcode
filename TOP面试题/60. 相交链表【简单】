@@ -1,0 +1,37 @@
+给你两个单链表的头节点 headA 和 headB ，请你找出并返回两个单链表相交的起始节点。如果两个链表不存在相交节点，返回 null 。
+
+
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution:
+    def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> ListNode:
+        pa,pb=headA,headB
+        alongerb=0
+        blongera=0
+        if not pa or not pb:
+            return null
+        while pa.next or pb.next:
+            if pa.next and pb.next:
+                pa=pa.next
+                pb=pb.next
+            elif pa.next and not pb.next:
+                pa=pa.next
+                alongerb+=1
+            else:
+                pb=pb.next
+                blongera+=1
+        PA,PB=headA,headB
+        if alongerb!=0:
+            for i in range(alongerb):
+                PA=PA.next
+        elif blongera!=0:
+            for i in range(blongera):
+                PB=PB.next
+        while PA and PB and PA!=PB: # 结点值相同并非结点相同，把PA.val去掉
+            PA=PA.next
+            PB=PB.next
+        return PA
