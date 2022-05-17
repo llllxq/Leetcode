@@ -1,0 +1,50 @@
+现在你总共有 numCourses 门课需要选，记为 0 到 numCourses - 1。给你一个数组 prerequisites ，其中 prerequisites[i] = [ai, bi] ，表示在选修课程 ai 前 必须 先选修 bi 。
+
+例如，想要学习课程 0 ，你需要先完成课程 1 ，我们用一个匹配来表示：[0,1] 。
+返回你为了学完所有课程所安排的学习顺序。可能会有多个正确的顺序，你只要返回 任意一种 就可以了。如果不可能完成所有课程，返回 一个空数组 。
+
+提示：
+1 <= numCourses <= 2000
+0 <= prerequisites.length <= numCourses * (numCourses - 1)
+prerequisites[i].length == 2
+0 <= ai, bi < numCourses
+ai != bi
+所有[ai, bi] 互不相同
+
+
+class Solution:
+    def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
+        if numCourses<2:
+            return [numCourses-1]
+        noCircle=True # 标记是否有环
+        ans=[]
+
+        def dfs(i):
+            # 不加上会出现如下报错，加global也会报错
+            # UnboundLocalError: local variable 'noCircle' referenced before assignment
+            # 如果作为参数传入，则最后全局变量noCircle并不会改变
+            nonlocal noCircle 
+            if not noCircle:
+                return
+            flag[i] = 1 # 本轮搜索起始结点，只要有环就停止，无环对相邻节点dfs
+            for j in adj[i]:
+                if not flag[j]:
+                    dfs(j)
+                    if not noCircle:
+                        return
+                elif flag[j]==1: # 已搜索过，表示出现环
+                    noCircle=False
+                    return
+            flag[i] = -1 #已经完成搜索，加入栈中
+            ans.append(i)
+
+        flag=[0]*numCourses
+        adj=[[] for i in range(numCourses)]
+        for second,first in prerequisites:
+            adj[first].append(second)
+        for i in range(numCourses):
+            if noCircle and not flag[i]:
+                dfs(i)
+        if not noCircle: # 存在环返回空
+            return []
+        return ans[::-1] # 搜索成功，从底至上返回栈
