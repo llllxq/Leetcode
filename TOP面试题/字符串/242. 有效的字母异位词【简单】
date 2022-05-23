@@ -1,0 +1,33 @@
+给定两个字符串 s 和 t ，编写一个函数来判断 t 是否是 s 的字母异位词。
+
+注意：若 s 和 t 中每个字符出现的次数都相同，则称 s 和 t 互为字母异位词。
+
+提示:
+
+1 <= s.length, t.length <= 5 * 10^4
+s 和 t 仅包含小写字母
+
+class Solution:
+    def isAnagram(self, s: str, t: str) -> bool:
+        # 另一种解法：排序直接判断是否相等
+        # 相当于是哈希字典，比直接创26个字母的空间会节省一点
+        if set(s)!= set(t):
+            return False
+        dictA={}
+        for i in s:
+            if i in dictA.keys():
+                dictA[i]+=1
+            else:
+                dictA[i]=1
+        for j in t:
+            if j in dictA.keys():
+                if dictA[j]==0:
+                    return False
+                dictA[j]-=1
+            else:
+                return False
+        for k in dictA.values():
+            if k!=0:
+                return False
+        return True
+
