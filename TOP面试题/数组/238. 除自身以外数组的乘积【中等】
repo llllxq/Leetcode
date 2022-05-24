@@ -1,0 +1,33 @@
+给你一个整数数组 nums，返回 数组 answer ，其中 answer[i] 等于 nums 中除 nums[i] 之外其余各元素的乘积 。
+
+题目数据 保证 数组 nums之中任意元素的全部前缀元素和后缀的乘积都在  32 位 整数范围内。
+
+请不要使用除法，且在 O(n) 时间复杂度内完成此题。
+
+提示：
+
+2 <= nums.length <= 105
+-30 <= nums[i] <= 30
+保证 数组 nums之中任意元素的全部前缀元素和后缀的乘积都在  32 位 整数范围内
+ 
+
+进阶：你可以在 O(1) 的额外空间复杂度内完成这个题目吗？（ 出于对空间复杂度分析的目的，输出数组不被视为额外空间。）
+
+
+class Solution:
+    def productExceptSelf(self, nums: List[int]) -> List[int]:
+        # 左右两边分布计算乘积，对应的相乘即是最后结果
+        left,right,n=[],[],len(nums)
+        for i in range(n):
+            if i==0:
+                left.append(1)
+            else:
+                left.append(left[i-1]*nums[i-1])
+        for j in range(n-1,-1,-1):
+            if j==n-1:
+                right.append(1)
+            else:
+                right.insert(0,right[0]*nums[j+1])
+        for k in range(n):
+            nums[k]=left[k]*right[k]
+        return nums
