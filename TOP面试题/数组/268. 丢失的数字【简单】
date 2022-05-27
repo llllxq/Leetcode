@@ -1,0 +1,31 @@
+给定一个包含 [0, n] 中 n 个数的数组 nums ，找出 [0, n] 这个范围内没有出现在数组中的那个数。
+
+示例 1：
+输入：nums = [3,0,1]
+输出：2
+解释：n = 3，因为有 3 个数字，所以所有的数字都在范围 [0,3] 内。2 是丢失的数字，因为它没有出现在 nums 中。
+
+提示：
+n == nums.length
+1 <= n <= 10^4
+0 <= nums[i] <= n
+nums 中的所有数字都 独一无二
+
+class Solution:
+    def missingNumber(self, nums: List[int]) -> int:
+        # 法三：直接相加会超时，则可以利用（首+末）*项数/2公式直接计算
+        # 法二：位运算，nums和原有的共有2n+1个数，有n个数各自出现一次，1个数只出现一次
+        # 可以用按位异或得到丢失的数字，a按位或a=0，a按位或0=a
+        ans=0
+        for i in range(len(nums)):
+            ans^=nums[i]
+            ans^=i
+        ans^=len(nums)
+        return ans
+        # 法一：ans为0-n的总和减去num中的总和，但全部先求和再相减会超出时间限制，所以采用边加边减的方法
+        # ans=0
+        # for i in range(len(nums)):
+        #     ans+=nums[i]
+        #     ans-=i
+        # ans-=len(nums)
+        # return abs(ans)
