@@ -1,0 +1,36 @@
+给你一个整数数组 nums 和一个整数 k ，请你返回其中出现频率前 k 高的元素。你可以按 任意顺序 返回答
+
+示例 1:
+
+输入: nums = [1,1,1,2,2,3], k = 2
+输出: [1,2]
+
+提示：
+
+1 <= nums.length <= 10^5
+k 的取值范围是 [1, 数组中不相同的元素的个数]
+题目数据保证答案唯一，换句话说，数组中前 k 个高频元素的集合是唯一的
+
+class Solution:
+    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+        dic={}
+        n=len(nums)
+        # 字典记录频率
+        for i in range(n):
+            if nums[i] in dic.keys():
+                dic[nums[i]]+=1
+            else:
+                dic[nums[i]]=1
+        
+        # 用小根堆，每次将最小的元素弹出，最后保留最大的前k个元素
+        heap=[]
+        for i,j in dic.items():
+            heapq.heappush(heap,(j,i)) # 会自动排序
+            if len(heap)>k:
+                heapq.heappop(heap)
+
+        # 输出
+        ans=[0]*k
+        for i in range(k-1,-1,-1): # 先弹出最小的，所以要倒序输出
+            ans[i]=heapq.heappop(heap)[1]
+        return ans
