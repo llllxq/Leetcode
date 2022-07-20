@@ -1,0 +1,25 @@
+给你一个 m 行 n 列的矩阵 matrix ，请按照 顺时针螺旋顺序 ，返回矩阵中的所有元素。
+
+提示：
+m == matrix.length
+n == matrix[i].length
+1 <= m, n <= 10
+-100 <= matrix[i][j] <= 100
+
+
+
+class Solution:
+    def spiralOrder(self, matrix: List[List[int]]) -> List[int]:
+        ans=[]
+        i,j=0,0
+        move_i,move_j=0,1 # 正常移动方向
+        m,n=len(matrix),len(matrix[0])
+        if matrix!=[]:
+            for _ in range(m*n):
+                ans.append(matrix[i][j])
+                matrix[i][j]=101
+                if matrix[(i+move_i)%m][(j+move_j)%n]==101: # 拐弯的时候判断是否已走过，走过则换方向
+                    move_i,move_j=move_j,-move_i
+                i+=move_i
+                j+=move_j
+        return ans
