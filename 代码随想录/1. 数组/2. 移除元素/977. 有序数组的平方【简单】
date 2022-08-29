@@ -15,6 +15,7 @@ class Solution:
         while r <= len(nums) - 1 and nums[r] < 0: # 找到最大的负值l
             l += 1
             r += 1
+        # 也可以直接从两头开始比
         while l >= 0 and r <= len(nums) - 1:
             if nums[l] * nums[l] < nums[r] * nums[r]:
                 ans.append(nums[l] * nums[l])
