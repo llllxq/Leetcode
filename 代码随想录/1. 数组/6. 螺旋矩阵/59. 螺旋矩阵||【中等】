@@ -1,0 +1,33 @@
+给你一个正整数 n ，生成一个包含 1 到 n2 所有元素，且元素按顺时针顺序螺旋排列的 n x n 正方形矩阵 matrix 。
+
+提示：
+1 <= n <= 20
+
+
+class Solution:
+    def generateMatrix(self, n: int) -> List[List[int]]:
+        ans=[[0]*n for i in range(n)] # 创建值为0的nxn空数组
+        loop_num=n//2 # 除了中心的循环圈数，2：1，3：1，4：2
+        start_x,start_y=0,0 # 每一圈的开始
+        a,k=1,1 # a为赋值，k为每一圈离边界的距离（右开的位置）
+        while loop_num>0:
+            for i in range(start_y,n-k): # 左到右，行start_x不变，列由start_y到右开
+                ans[start_x][i]=a
+                a+=1
+            for i in range(start_x,n-k): # 上到下，列不变n-k(上次变化)，行由start_x到n-k
+                ans[i][n-k]=a
+                a+=1
+            for i in range(n-k,start_y,-1): # 倒序，右到左，行不变n-k，列由n-k到start_y
+                ans[n-k][i]=a
+                a+=1
+            for i in range(n-k,start_x,-1): # 倒序，下到上，列不变start_y，行由n-k到start_x
+                ans[i][start_y]=a
+                a+=1
+            start_x+=1
+            start_y+=1
+            loop_num-=1
+            k+=1
+        if n%2!=0: # 处理中心位置
+            mid=n//2
+            ans[mid][mid]=a
+        return ans
