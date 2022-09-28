@@ -1,0 +1,35 @@
+给你一个链表，删除链表的倒数第 n 个结点，并且返回链表的头结点。
+
+输入：head = [1], n = 1
+输出：[]
+示例 3：
+输入：head = [1,2], n = 1
+输出：[1]
+
+
+提示：
+
+链表中结点的数目为 sz
+1 <= sz <= 30
+0 <= Node.val <= 100
+1 <= n <= sz
+
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
+        dummy_head=ListNode(next=head)
+        fast,slow=dummy_head,dummy_head # 虚拟头结点的重要性，如果只有一个结点，删除后还可以返回虚拟头节点的next
+        # for i in range(n+1): # 0~n为n+1
+        #     fast=fast.next # 当长度为1，n为1时，fast.next可能不存在
+        while n!=0:
+            fast=fast.next
+            n-=1
+        while fast.next!=None: # 走到最后一个实结点
+            fast=fast.next
+            slow=slow.next
+        slow.next=slow.next.next # fast走到结尾后，slow的下一个结点为倒数第n个结点
+        return dummy_head.next
