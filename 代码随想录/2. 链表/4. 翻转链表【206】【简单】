@@ -1,0 +1,31 @@
+给你单链表的头节点 head ，请你反转链表，并返回反转后的链表。
+
+提示：
+链表中节点的数目范围是 [0, 5000]
+-5000 <= Node.val <= 5000
+ 
+
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        # 迭代法
+        # cur,pre=head,None
+        # while cur!=None:
+        #     tmp=cur.next # tmp无需在while前声明，只需要是cur的后一个即可
+        #     cur.next=pre # cur在pre之后，反转
+        #     pre=cur # pre后移
+        #     cur=tmp # 如果已经到达最后一个，tmp=None，则下次不会进入while
+        # return pre
+
+        # 递归法
+        def reverse(pre, cur): # 完成pre和cur指针指向的变化
+            if not cur:
+                return pre
+            tmp = cur.next # 保留cur下一个
+            cur.next = pre # 交换
+            return reverse(cur, tmp) # 交换cur和其下一个
+        return reverse(None, head)
