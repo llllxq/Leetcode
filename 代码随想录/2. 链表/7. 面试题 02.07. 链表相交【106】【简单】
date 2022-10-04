@@ -1,0 +1,77 @@
+给你两个单链表的头节点 headA 和 headB ，请你找出并返回两个单链表相交的起始节点。如果两个链表不存在相交节点，返回 null 。
+
+提示：
+listA 中节点数目为 m
+listB 中节点数目为 n
+1 <= m, n <= 3 * 10^4
+1 <= Node.val <= 10^5
+0 <= skipA <= m
+0 <= skipB <= n
+如果 listA 和 listB 没有交点，intersectVal 为 0
+如果 listA 和 listB 有交点，intersectVal == listA[skipA] == listB[skipB]
+ 
+
+进阶：你能否设计一个时间复杂度 O(m + n) 、仅用 O(1) 内存的解决方案？
+
+
+
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution:
+    def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> Optional[ListNode]:
+        # 法2：一次遍历法
+        # 例子[4,1,8,4,5]，[5,6,1,8,4,5]
+        # while后，ha=None,hb=5
+        # ha=headB=5,hb=None，a走完走b
+        # ha=6,hb=headA=4
+        # 相当于：
+        # 41845561845
+        # 56184541845
+        # 串起来两个长度一定相等，且能找到最后相交的点
+        if headA==None or headB==None:
+            return None
+        ha,hb=headA,headB
+        while ha!=hb: 
+            ha=ha.next if ha else headB
+            # 等价于
+            # if ha:
+            #     ha=ha.next
+            # else:
+            #     ha=headB
+            hb=hb.next if hb else headA
+        return ha
+        # 法1：传统方法，两次遍历，一次求长度，二次找相交
+        # if headA==None or headB==None:
+        #     return None
+        # ha,hb=headA,headB
+        # na,nb=0,0
+        # while ha!=None:
+        #     na+=1
+        #     ha=ha.next
+        # while hb!=None:
+        #     nb+=1
+        #     hb=hb.next
+        # ha,hb=headA,headB
+        # if na>nb:
+        #     n=nb
+        #     m=na-nb
+        #     while m!=0:
+        #         ha=ha.next
+        #         m-=1
+        # else:
+        #     n=na
+        #     m=nb-na
+        #     while m!=0:
+        #         hb=hb.next
+        #         m-=1
+        # while n!=0:
+        #     if ha==hb:
+        #         return ha
+        #     else:
+        #         ha=ha.next
+        #         hb=hb.next
+        # return null
